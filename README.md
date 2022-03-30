@@ -1,139 +1,79 @@
-# ESPCN-PyTorch
+# Real-Time Video Super-Resolution Application on VCK5000
 
 ## Overview
 
-This repository contains an op-for-op PyTorch reimplementation
-of [Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network](https://arxiv.org/abs/1609.05158v2).
+This repository is used to submit the Adaptive Computing Challenge 2021 with Xilinx.
 
 ## Table of contents
 
-- [ESPCN-PyTorch](#espcn-pytorch)
+- [Real-Time Video Super-Resolution Application on VCK5000](#Real-Time Video Super-Resolution Application on VCK5000)
     - [Overview](#overview)
     - [Table of contents](#table-of-contents)
-    - [About Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network](#about-real-time-single-image-and-video-super-resolution-using-an-efficient-sub-pixel-convolutional-neural-network)
-    - [Download weights](#download-weights)
-    - [Download datasets](#download-datasets)
-        - [Download train dataset](#download-train-dataset)
-        - [Download valid dataset](#download-valid-dataset)
-    - [Test](#test)
-    - [Train](#train)
-    - [Result](#result)
-    - [Credit](#credit)
-        - [Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network](#real-time-single-image-and-video-super-resolution-using-an-efficient-sub-pixel-convolutional-neural-network)
+    - [Introduction](#Introduction)
+    - [Model](#Model)
+        - [ESPCN](#ESPCN)
+            - [About Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network](#About Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network)
+        - [BasicVSR](#BasicVSR)
+            - [About The Search for Essential Components in Video Super-Resolution and Beyond](#About The Search for Essential Components in Video Super-Resolution and Beyond)
+    - [Completed Work](#Completed Work)
+    - [To-do List](#To-do List)
+    - [Conclusion](#Conclusion)
+    - [Reference](#Reference)
 
-## About Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network
+## Introduction
 
-If you're new to ESPCN, here's an abstract straight from the paper:
+In recent years, the resolution of high-definition displays has reached a new level, such as 1920x1080 for HDTV and 3840x2160 for some ultra-high-definition 4k TVs. However, with advanced display devices, relatively early movies, TV programs or games are often not well represented in the aforementioned devices, which greatly reduces the user's sense of experience. In the past, most of the high-definition remakes of classic games and movies were mainly based on multimedia materials, and this part of the work could only be completed by professional designers, which took a lot of time and resources.
 
-Recently, several models based on deep neural networks have achieved great success in terms of both reconstruction accuracy and computational
-performance for single image super-resolution. In these methods, the low resolution (LR)
-input image is upscaled to the high resolution (HR) space using a single filter, commonly bicubic interpolation, before reconstruction. This means
-that the super-resolution (SR) operation is performed in HR space. We demonstrate that this is sub-optimal and adds computational complexity. In this
-paper, we present the first convolutional neural network (CNN) capable of real-time SR of 1080p videos on a single K2 GPU. To achieve this, we propose
-a novel CNN architecture where the feature maps are extracted in the LR space. In addition, we introduce an efficient sub-pixel convolution layer
-which learns an array of upscaling filters to upscale the final LR feature maps into the HR output. By doing so, we effectively replace the
-handcrafted bicubic filter in the SR pipeline with more complex upscaling filters specifically trained for each feature map, whilst also reducing the
-computational complexity of the overall SR operation. We evaluate the proposed approach using images and videos from publicly available datasets and
-show that it performs significantly better (+0.15dB on Images and +0.39dB on Videos) and is an order of magnitude faster than previous CNN-based
-methods.
+At the same time, in order to meet the real-time audio and video transmission on the mobile terminal, low resolution is also a pain point, which is due to the limitation of transmission bandwidth and real-time requirements. Low-resolution video cannot effectively display image details, thus bringing limited user experience. Therefore, it is of great significance to perform video real-time super-score.
 
-## Download weights
+In this challenge, I intends to use the powerful AIE inference computing power of **[VCK5000](https://www.xilinx.com/products/boards-and-kits/vck5000.html)** to reproduce the papers based on neural network super-resolution in recent years. The most typical models are the **[ESPCN](#ESPCN)** and **[BasicVSR](#BasicVSR)** models, which have simple structures and can effectively use AIE to accelerate operations based on convolutional neural networks.
 
-- [Google Driver](https://drive.google.com/drive/folders/1uinHAlm5UrWOrUQdGl5tj682u0WaNuVO?usp=sharing)
-- [Baidu Driver](https://pan.baidu.com/s/1V4g2o-fcLjLgME_B_66dmQ) access:`llot`
+## Model
 
-## Download datasets
+### ESPCN
 
-### Download train dataset
+#### About Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network
 
-#### T91
+Here's an abstract straight from the paper:
 
-- Image format
-    - [Google Driver](https://drive.google.com/drive/folders/1PYizfnKq-UtRCDoSy79PGA4FC5HqAqch?usp=sharing)
-    - [Baidu Driver](https://pan.baidu.com/s/1M0u-BPTdokxO452j7vxW4Q) access: `llot`
+Recently, several models based on deep neural networks have achieved great success in terms of both reconstruction accuracy and computational performance for single image super-resolution. In these methods, the low resolution (LR) input image is upscaled to the high resolution (HR) space using a single filter, commonly bicubic interpolation, before reconstruction. This means that the super-resolution (SR) operation is performed in HR space. We demonstrate that this is sub-optimal and adds computational complexity. 
 
-- LMDB format (train)
-    - [Google Driver](https://drive.google.com/drive/folders/1BPqN08QHk_xFnMJWMS8grfh_vesVs8Jf?usp=sharing)
-    - [Baidu Driver](https://pan.baidu.com/s/1eqeORnKcTmGatx2kAG92-A) access: `llot`
+In this paper, we present the first convolutional neural network (CNN) capable of real-time SR of 1080p videos on a single K2 GPU. To achieve this, we propose a novel CNN architecture where the feature maps are extracted in the LR space. In addition, we introduce an efficient sub-pixel convolution layer which learns an array of upscaling filters to upscale the final LR feature maps into the HR output. By doing so, we effectively replace the handcrafted bicubic filter in the SR pipeline with more complex upscaling filters specifically trained for each feature map, whilst also reducing the computational complexity of the overall SR operation. We evaluate the proposed approach using images and videos from publicly available datasets and show that it performs significantly better (+0.15dB on Images and +0.39dB on Videos) and is an order of magnitude faster than previous CNN-based
+methods.![](/home/huang/workspace/ESPCN/assets/Screenshot from 2022-03-30 21-10-45.png)
 
-- LMDB format (valid)
-    - [Google Driver](https://drive.google.com/drive/folders/1bYqqKk6NJ9wUfxTH2t_LbdMTB04OUicc?usp=sharing)
-    - [Baidu Driver](https://pan.baidu.com/s/1W34MeEtLY0m-bOrnaveVmw) access: `llot`
+### BasicVSR
 
-### Download valid dataset
+#### About The Search for Essential Components in Video Super-Resolution and Beyond
 
-#### Set5
+Here's an abstract straight from the paper:
 
-- Image format
-    - [Google Driver](https://drive.google.com/file/d/1GtQuoEN78q3AIP8vkh-17X90thYp_FfU/view?usp=sharing)
-    - [Baidu Driver](https://pan.baidu.com/s/1dlPcpwRPUBOnxlfW5--S5g) access:`llot`
+Video super-resolution (VSR) approaches tend to have more components than the image counterparts as they need to exploit the additional temporal dimension. Complex designs are not uncommon. In this study, we wish to untangle the knots and reconsider some most essential components for VSR guided by four basic functionalities, i.e., Propagation, Alignment, Aggregation, and Upsampling. By reusing some existing components added with minimal redesigns, we show a succinct pipeline, BasicVSR, that achieves appealing improvements in terms of speed and restoration quality in comparison to many state-of-the-art algorithms. We conduct systematic analysis to explain how such gain can be obtained and discuss the pitfalls. We further show the extensibility of BasicVSR by presenting an informationrefill mechanism and a coupled propagation scheme to facilitate information aggregation. The BasicVSR and its extension, IconVSR, can serve as strong baselines for future VSR approaches.![](/home/huang/workspace/ESPCN/assets/Screenshot from 2022-03-30 21-14-07.png)
 
-#### Set14
 
-- Image format
-    - [Google Driver](https://drive.google.com/file/d/1CzwwAtLSW9sog3acXj8s7Hg3S7kr2HiZ/view?usp=sharing)
-    - [Baidu Driver](https://pan.baidu.com/s/1KBS38UAjM7bJ_e6a54eHaA) access:`llot`
 
-#### BSD100
+## Completed Work
 
-- Image format
-    - [Google Driver](https://drive.google.com/file/d/1xkjWJGZgwWjDZZFN6KWlNMvHXmRORvdG/view?usp=sharing)
-    - [Baidu Driver](https://pan.baidu.com/s/1EBVulUpsQrDmZfqnm4jOZw) access:`llot`
+First, we successfully installed the environment required for [VCK5000](https://www.xilinx.com/products/boards-and-kits/vck5000.html) to run on Ubuntu20.04.1, including XRT and [Vitis-AI](https://github.com/Xilinx/Vitis-AI). And we successfully run the ResNet50 demo on VCK5000.
 
-## Test
+Since we used the Xilinx hardware development process to design, we spent a lot of time in the early stage to learn the vitis-ai software method implementation and the use of new devices
 
-Modify the contents of the file as follows.
+Then, we simply reproduced the ESPCN model and retraining using pytorch 1.7.0 in Docker, and quantified the model using the Quantization Tool in Vitis-AI. 
 
-- line 24: `upscale_factor` change to the magnification you need to enlarge.
-- line 25: `mode` change Set to valid mode.
-- line 76: `model_path` change weight address after training.
+Sadly, due to the Covid-19 pandemic and other work arrangements, we only have one month to complete the above:(
 
-## Train
+## To-do List
 
-Modify the contents of the file as follows.
+If we can have more time to complete this project in addition to the competition, then the next work is our goal.
 
-- line 24: `upscale_factor` change to the magnification you need to enlarge.
-- line 25: `mode` change Set to train mode.
+- [ ] Implement and debug the real-time super-resolution application
+- [ ] Deploy the generated .xmodel to VCK5000
+- [ ] Replace the ESPCN model with the BasicVSR model for better visual effects
 
-If you want to load weights that you've trained before, modify the contents of the file as follows.
+## Reference
 
-- line 47: `resume` change to `True`.
-- line 48: `strict` Transfer learning is set to `False`, incremental learning is set to `True`.
-- line 49: `start_epoch` change number of training iterations in the previous round.
-- line 50: `resume_weight` the weight address that needs to be loaded.
+### [Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network](https://arxiv.org/abs/1609.05158v2)
 
-## Result
-
-Source of original paper results: https://arxiv.org/pdf/1609.05158v2.pdf
-
-In the following table, the value in `()` indicates the result of the project, and `-` indicates no test.
-
-| Dataset | Scale |       PSNR       |
-| :-----: | :---: | :--------------: |
-|  Set5   |   3   | 32.55(**32.59**) |
-|  Set14  |   3   | 29.08(**28.86**) |
-
-Low Resolution / Super Resolution / High Resolution
-<span align="center"><img src="assets/result.png"/></span>
-
-### Credit
-
-#### Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network
-
-_Wenzhe Shi, Jose Caballero, Ferenc Huszár, Johannes Totz, Andrew P. Aitken, Rob Bishop, Daniel Rueckert, Zehan Wang_ <br>
-
-**Abstract** <br>
-Recently, several models based on deep neural networks have achieved great success in terms of both reconstruction accuracy and computational
-performance for single image super-resolution. In these methods, the low resolution (LR)
-input image is upscaled to the high resolution (HR) space using a single filter, commonly bicubic interpolation, before reconstruction. This means
-that the super-resolution (SR) operation is performed in HR space. We demonstrate that this is sub-optimal and adds computational complexity. In this
-paper, we present the first convolutional neural network (CNN) capable of real-time SR of 1080p videos on a single K2 GPU. To achieve this, we propose
-a novel CNN architecture where the feature maps are extracted in the LR space. In addition, we introduce an efficient sub-pixel convolution layer
-which learns an array of upscaling filters to upscale the final LR feature maps into the HR output. By doing so, we effectively replace the
-handcrafted bicubic filter in the SR pipeline with more complex upscaling filters specifically trained for each feature map, whilst also reducing the
-computational complexity of the overall SR operation. We evaluate the proposed approach using images and videos from publicly available datasets and
-show that it performs significantly better (+0.15dB on Images and +0.39dB on Videos) and is an order of magnitude faster than previous CNN-based
-methods.
+*Wenzhe Shi, Jose Caballero, Ferenc Huszár, Johannes Totz, Andrew P. Aitken, Rob Bishop, Daniel Rueckert, Zehan Wan*g <br>
 
 [[Paper]](https://arxiv.org/pdf/1609.05158)
 
@@ -160,3 +100,19 @@ methods.
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 ```
+
+### [BasicVSR: The Search for Essential Components in Video Super-Resolution and Beyond](https://arxiv.org/pdf/2012.02181)
+
+*[Kelvin C.K. Chan](https://ckkelvinchan.github.io/), [Xintao Wang](https://xinntao.github.io/), [Ke Yu](https://yuke93.github.io/), [Chao Dong](https://scholar.google.com.hk/citations?user=OSDCB0UAAAAJ&hl=zh-CN), [Chen Change Loy](http://personal.ie.cuhk.edu.hk/~ccloy/)* 
+
+[[Paper]](https://arxiv.org/pdf/2012.02181)
+
+```
+@InProceedings{chan2021basicvsr,
+  author = {Chan, Kelvin CK and Wang, Xintao and Yu, Ke and Dong, Chao and Loy, Chen Change},
+  title = {BasicVSR: The Search for Essential Components in Video Super-Resolution and Beyond},
+  booktitle = {Proceedings of the IEEE conference on computer vision and pattern recognition},
+  year = {2021}
+}
+```
+
