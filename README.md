@@ -69,6 +69,12 @@ If we can have more time to complete this project in addition to the competition
 - [ ] Deploy the generated .xmodel to VCK5000
 - [ ] Replace the ESPCN model with the BasicVSR model for better visual effects
 
+## Conclusion
+
+In this challenge, we tried new development methods, although there are some learning costs. But it is undeniable that this will be a new and efficient development method. Through the perfect software-defined development environment, the development efficiency of hardware design has been greatly improved. To a certain extent, it is similar to Nvidia's CUDA programming (if the development ecology is better, it would be really great!) For the reasons mentioned above, our team was unable to improve the project and did not meet expectations which we planed. 
+
+Anyway, thanks a lot to Xilinx and hackster.io for providing this perfect learning opportunity and support.
+
 ## Reference
 
 ### [Real-Time Single Image and Video Super-Resolution Using an Efficient Sub-Pixel Convolutional Neural Network](https://arxiv.org/abs/1609.05158v2)
